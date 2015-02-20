@@ -55,7 +55,10 @@ minetest.register_node("scaffolding:iron_scaffolding", {
 			},
 		},
 		after_dig_node = function(pos, node, metadata, digger)
-		default.dig_hor(pos, node, digger)
+		default.dig_horx(pos, node, digger)
+		default.dig_horx2(pos, node, digger)
+		default.dig_horz(pos, node, digger)
+		default.dig_horz2(pos, node, digger)
 	end,
 	})
 

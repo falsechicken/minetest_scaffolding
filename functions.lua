@@ -1,4 +1,4 @@
-scaffolding_nodenames={"scaffolding:scaffolding"}
+scaffolding_nodenames={"scaffolding:scaffolding","scaffolding:iron_scaffolding"}
 
 minetest.register_on_dignode(function(pos, node)
 	local i=1
@@ -15,7 +15,7 @@ minetest.register_on_dignode(function(pos, node)
 	end
 end)
 
-iron_scaffolding_nodenames={"scaffolding:iron_scaffolding"}
+iron_scaffolding_nodenames={"scaffolding:platform","scaffolding:iron_platform"}
 
 minetest.register_on_dignode(function(pos, node)
 	local i=1

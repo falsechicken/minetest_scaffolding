@@ -1,3 +1,5 @@
+
+
 print("scaffolding: Loading 'functions.lua'")
 dofile(minetest.get_modpath("scaffolding").."/functions.lua")
 
@@ -26,21 +28,40 @@ minetest.register_node("scaffolding:scaffolding", {
 				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
 			end
 		end,
-		--[[on_rightclick = function(pos, node, player, itemstack, pointed_thing)
-			if itemstack:get_name() == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:reinforced_scaffolding"
-				minetest.env:set_node(pos, node)
-			
+		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
+			if itemstack:get_name() == "scaffolding:scaffolding" then
+
+				-- many thanks to addi for improveing (rewriteing) my crappy code --
+				local name = minetest.get_node(pos).name 									-- get loacation of node
+				height = 0; 																							-- set hite of scaffolding (not set)
+
+				--[[ debug stuff ]]
+				minetest.chat_send_all(string.format("node: %s",name))
+
+				minetest.chat_send_all(string.format("node: %s %s %s ",pos.x, pos.y, pos.z ))
+
+				repeat
+					pos.y = pos.y + 1; --every run get one node up
+					height = height + 1
+					local current_node = minetest.get_node(pos); --get the node of the new position
+					minetest.chat_send_all(string.format("found %q at location: %s",
+														 current_node.name,
+														 minetest.pos_to_string(pos)
+														 ))
+
+					if current_node.name == "air" then
+						minetest.set_node(pos, {name = "scaffolding:scaffolding"} )
+						itemstack:take_item(1); --//and remove one if its the correct one
+						player:set_wielded_item(itemstack);--//update inventory of the player
+					end
+				until current_node.name ~= "scaffolding:scaffolding" or height >= 64 --we repeat until we find something else then "scaffolding:scaffolding"
+				--maybe there should be also another limit, because its currently possible to build infinite towers
+				minetest.chat_send_all(string.format("exit loop"))
+
 			end
+
 		end,
-		on_punch = function(pos, node, puncher)
-		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "air"
-				minetest.env:set_node(pos, node)
-				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
-			end
-		end,]]			
+
 		node_box = {
 			type = "fixed",
 			fixed = {
@@ -57,7 +78,7 @@ minetest.register_node("scaffolding:scaffolding", {
 		default.dig_up(pos, node, digger)
 	end,
 	})
-	
+
 minetest.register_node("scaffolding:reinforced_scaffolding", {
 		description = "Wooden Scaffolding",
 		drawtype = "nodebox",
@@ -93,7 +114,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 				minetest.env:set_node(pos, node)
 				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
 			end
-		end,]]					
+		end,]]
 		node_box = {
 			type = "fixed",
 			fixed = {
@@ -107,7 +128,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 			},
 		},
 	})
-	
+
 	minetest.register_node("scaffolding:platform", {
 		description = "Wooden Platform",
 		drawtype = "nodebox",
@@ -145,7 +166,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		default.dig_horz2(pos, node, digger)
 	end,
 	})
-	
+
 	minetest.register_node("scaffolding:reinforced_platform", {
 		description = "Wooden Platform",
 		drawtype = "nodebox",
@@ -178,7 +199,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 			},
 		},
 	})
-	
+
 	minetest.register_node("scaffolding:iron_scaffolding", {
 		description = "Iron Scaffolding",
 		drawtype = "nodebox",
@@ -211,27 +232,44 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
 			end
 		end,
-	--[[on_rightclick = function(pos, node, puncher)
-		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:reinforced_iron_scaffolding"
-				minetest.env:set_node(pos, node)
+		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
+			if itemstack:get_name() == "scaffolding:iron_scaffolding" then
+
+				-- many thanks to addi for improveing (rewriteing) my crappy code --
+				local name = minetest.get_node(pos).name 									-- get loacation of node
+				height = 0; 																							-- set hite of scaffolding (not set)
+
+				--[[ debug stuff ]]
+				minetest.chat_send_all(string.format("node: %s",name))
+
+				minetest.chat_send_all(string.format("node: %s %s %s ",pos.x, pos.y, pos.z ))
+
+				repeat
+					pos.y = pos.y + 1; --every run get one node up
+					height = height + 1
+					local current_node = minetest.get_node(pos); --get the node of the new position
+					minetest.chat_send_all(string.format("found %q at location: %s",
+														 current_node.name,
+														 minetest.pos_to_string(pos)
+														 ))
+
+					if current_node.name == "air" then
+						minetest.set_node(pos, {name = "scaffolding:iron_scaffolding"} )
+						itemstack:take_item(1); --//and remove one if its the correct one
+						player:set_wielded_item(itemstack);--//update inventory of the player
+					end
+				until current_node.name ~= "scaffolding:iron_scaffolding" or height >= 64 --we repeat until we find something else then "scaffolding:scaffolding"
+				--maybe there should be also another limit, because its currently possible to build infinite towers
+				minetest.chat_send_all(string.format("exit loop"))
+
 			end
+
 		end,
-		on_punch = function(pos, node, puncher)
-		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "air"
-				minetest.env:set_node(pos, node)
-				--puncher:get_inventory():remove_item("main", ItemStack("beer_test:tankard"))
-				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
-			end
-		end,]]				
 	after_dig_node = function(pos, node, metadata, digger)
 		default.dig_up(pos, node, digger)
 	end,
 	})
-	
+
 	minetest.register_node("scaffolding:reinforced_iron_scaffolding", {
 		description = "Iron Scaffolding",
 		drawtype = "nodebox",
@@ -259,7 +297,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 				node.name = "scaffolding:iron_scaffolding"
 				minetest.env:set_node(pos, node)
 			end
-		end,	
+		end,
 		on_punch = function(pos, node, puncher)
 		local tool = puncher:get_wielded_item():get_name()
 			if tool and tool == "scaffolding:scaffolding_wrench" then
@@ -268,7 +306,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 				--puncher:get_inventory():remove_item("main", ItemStack("beer_test:tankard"))
 				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
 			end
-		end,]]			
+		end,]]
 		node_box = {
 			type = "fixed",
 			fixed = {
@@ -282,7 +320,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 			},
 		},
 	})
-	
+
 	minetest.register_node("scaffolding:iron_platform", {
 		description = "Iron Platform",
 		drawtype = "nodebox",
@@ -320,7 +358,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 			default.dig_horz2(pos, node, digger)
 		end,
 	})
-	
+
 	minetest.register_node("scaffolding:reinforced_iron_platform", {
 		description = "Iron Platform",
 		drawtype = "nodebox",
@@ -353,7 +391,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 			},
 		},
 	})
-	
+
 ----------------------
 -- wood scaffolding --
 ----------------------
@@ -481,5 +519,3 @@ minetest.register_craft({
 		{'default:steel_ingot', '', ''},
 	}
 })
-
-

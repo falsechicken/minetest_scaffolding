@@ -29,6 +29,28 @@ minetest.register_node("scaffolding:scaffolding", {
 			end
 		end,
 		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
+			if itemstack:get_name() == "scaffolding:platform" then
+
+				--arrayZ ( 1,  0, -1, -1,  0,  0,  1,  1 );
+			--	arrayX(  0, -1,  0,  0,  1,  1,  0,  0 );
+
+				local name = minetest.get_node(pos).name
+
+				posZ = {'1', '0', '-1', '-1', '0', '0', '1', '1' };
+				posX = {'0', '-1',  '0', '0', '1', '1', '0', '0' };
+
+					for nameCount = 1, 8 do
+						pos.z = pos.z + posZ[nameCount];
+						pos.x = pos.x + posX[nameCount];
+						local current_node = minetest.get_node(pos);
+						if current_node.name == "air" then
+							minetest.set_node(pos, {name = "scaffolding:platform"} )
+							itemstack:take_item(1); --//and remove one if its the correct one
+							break;
+						end
+					end
+			end
+
 			if itemstack:get_name() == "scaffolding:scaffolding" then
 
 				-- many thanks to addi for improveing (rewriteing) my crappy code --

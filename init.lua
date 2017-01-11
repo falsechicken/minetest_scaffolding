@@ -22,25 +22,20 @@ local buildScaffolding = function(node, pos, itemstack, player)
 	-- code for the building scaffolding
 	height = 0;
 	depth = 0;		-- !!Note!! depth is not needed at the moment
-	minetest.chat_send_all(string.format("Hello"))
+
 
 	--[[ debug stuff ]]
-	minetest.chat_send_all(string.format("node: %s",name))
 
-	minetest.chat_send_all(string.format("node: %s %s %s ",pos.x, pos.y, pos.z ))
 
 	-- set pos at bottom of scafolding tower.
 	repeat
 		pos.y = pos.y - 1; --every run get one node up
 		depth = depth - 1
 		local current_node = minetest.get_node(pos); --get the node of the new position
-			minetest.chat_send_all(string.format("found %q at location: %s",
-				current_node.name,
-				minetest.pos_to_string(pos)
-			))
+		
 
 		until current_node.name ~= node -- will repeat untill it dose not find a scaffolding node
-			minetest.chat_send_all(string.format("exit loop"))
+
 
 	-- check height of scaffolding tower --
 
@@ -48,10 +43,7 @@ local buildScaffolding = function(node, pos, itemstack, player)
 		pos.y = pos.y + 1; --every run get one node up
 		height = height + 1
 		local current_node = minetest.get_node(pos); --get the node of the new position
-			minetest.chat_send_all(string.format("found %q at location: %s",
-				current_node.name,
-				minetest.pos_to_string(pos)
-			))
+
 
 		if current_node.name == "air" then
 			minetest.set_node(pos, {name = node } )
@@ -60,7 +52,7 @@ local buildScaffolding = function(node, pos, itemstack, player)
 		end
 	until current_node.name ~= node or height >= 32 --we repeat until we find something else then "scaffolding:scaffolding"
 			--maybe there should be also another limit, because its currently possible to build infinite towers
-			minetest.chat_send_all(string.format("exit loop"))
+
 end
 
 print("scaffolding: Loading 'functions.lua'")

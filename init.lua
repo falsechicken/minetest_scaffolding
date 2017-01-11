@@ -1,3 +1,67 @@
+local buildPlatform = function(node, pos, itemstack)
+	-- code for the building platforms
+		posZ = {'1', '0', '-1', '-1', '0', '0', '1', '1' };
+		posX = {'0', '-1',  '0', '0', '1', '1', '0', '0' };
+
+		for nameCount = 1, 8 do
+			pos.z = pos.z + posZ[nameCount];
+			pos.x = pos.x + posX[nameCount];
+			local current_node = minetest.get_node(pos);
+			if current_node.name == "air" then
+				minetest.set_node(pos, {name = node} )
+				itemstack:take_item(1); --//and remove one if its the correct one
+				break;
+			end
+		end
+	-- end of function
+end
+
+local buildScaffolding = function(node, pos, itemstack, player)
+	-- many thanks to addi for improveing (rewriteing) my crappy code --
+
+	-- code for the building scaffolding
+	height = 0;
+	depth = 0;		-- !!Note!! depth is not needed at the moment
+	minetest.chat_send_all(string.format("Hello"))
+
+	--[[ debug stuff ]]
+	minetest.chat_send_all(string.format("node: %s",name))
+
+	minetest.chat_send_all(string.format("node: %s %s %s ",pos.x, pos.y, pos.z ))
+
+	-- set pos at bottom of scafolding tower.
+	repeat
+		pos.y = pos.y - 1; --every run get one node up
+		depth = depth - 1
+		local current_node = minetest.get_node(pos); --get the node of the new position
+			minetest.chat_send_all(string.format("found %q at location: %s",
+				current_node.name,
+				minetest.pos_to_string(pos)
+			))
+
+		until current_node.name ~= node -- will repeat untill it dose not find a scaffolding node
+			minetest.chat_send_all(string.format("exit loop"))
+
+	-- check height of scaffolding tower --
+
+	repeat
+		pos.y = pos.y + 1; --every run get one node up
+		height = height + 1
+		local current_node = minetest.get_node(pos); --get the node of the new position
+			minetest.chat_send_all(string.format("found %q at location: %s",
+				current_node.name,
+				minetest.pos_to_string(pos)
+			))
+
+		if current_node.name == "air" then
+			minetest.set_node(pos, {name = node } )
+			itemstack:take_item(1); --//and remove one if its the correct one
+			player:set_wielded_item(itemstack);--//update inventory of the player
+		end
+	until current_node.name ~= node or height >= 32 --we repeat until we find something else then "scaffolding:scaffolding"
+			--maybe there should be also another limit, because its currently possible to build infinite towers
+			minetest.chat_send_all(string.format("exit loop"))
+end
 
 print("scaffolding: Loading 'functions.lua'")
 dofile(minetest.get_modpath("scaffolding").."/functions.lua")
@@ -28,78 +92,23 @@ minetest.register_node("scaffolding:scaffolding", {
 			end
 		end,
 		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
-			-- if user hits scaffolding with platform then --
+			-- if user hits scaffolding with platform Wooden scaffolding then --
 			if itemstack:get_name() == "scaffolding:platform" then
-
-				--arrayZ ( 1,  0, -1, -1,  0,  0,  1,  1 );
-			--	arrayX(  0, -1,  0,  0,  1,  1,  0,  0 );
-
-				local name = minetest.get_node(pos).name
-
-				posZ = {'1', '0', '-1', '-1', '0', '0', '1', '1' };
-				posX = {'0', '-1',  '0', '0', '1', '1', '0', '0' };
-
-					for nameCount = 1, 8 do
-						pos.z = pos.z + posZ[nameCount];
-						pos.x = pos.x + posX[nameCount];
-						local current_node = minetest.get_node(pos);
-						if current_node.name == "air" then
-							minetest.set_node(pos, {name = "scaffolding:platform"} )
-							itemstack:take_item(1); --//and remove one if its the correct one
-							break;
-						end
-					end
+				node = "scaffolding:platform";
+				buildPlatform(node, pos, itemstack)
+			end
+			-- if user hits scaffolding with platform Iron scaffolding then --
+			if itemstack:get_name() == "scaffolding:iron_platform" then
+				node = "scaffolding:iron_platform";
+				buildPlatform(node, pos, itemstack)
 			end
 			-- if user hits scaffolding with scaffolding then --
 			if itemstack:get_name() == "scaffolding:scaffolding" then
-
-				-- many thanks to addi for improveing (rewriteing) my crappy code --
+				node = "scaffolding:scaffolding";
 				local name = minetest.get_node(pos).name 									-- get loacation of node
-				height = 0;
-				depth = 0;		-- !!Note!! depth is not needed at the moment
-
-				--[[ debug stuff ]]
-				minetest.chat_send_all(string.format("node: %s",name))
-
-				minetest.chat_send_all(string.format("node: %s %s %s ",pos.x, pos.y, pos.z ))
-
-				-- set pos at bottom of scafolding tower.
-				repeat
-					pos.y = pos.y - 1; --every run get one node up
-					depth = depth - 1
-					local current_node = minetest.get_node(pos); --get the node of the new position
-						minetest.chat_send_all(string.format("found %q at location: %s",
-							current_node.name,
-							minetest.pos_to_string(pos)
-						))
-
-					until current_node.name ~= "scaffolding:scaffolding" -- will repeat untill it dose not find a scaffolding node
-						minetest.chat_send_all(string.format("exit loop"))
-
-				-- check height of scaffolding tower --
-
-				repeat
-					pos.y = pos.y + 1; --every run get one node up
-					height = height + 1
-					local current_node = minetest.get_node(pos); --get the node of the new position
-						minetest.chat_send_all(string.format("found %q at location: %s",
-							current_node.name,
-							minetest.pos_to_string(pos)
-						))
-
-					if current_node.name == "air" then
-						minetest.set_node(pos, {name = "scaffolding:scaffolding"} )
-						itemstack:take_item(1); --//and remove one if its the correct one
-						player:set_wielded_item(itemstack);--//update inventory of the player
-					end
-				until current_node.name ~= "scaffolding:scaffolding" or height >= 32 --we repeat until we find something else then "scaffolding:scaffolding"
-						--maybe there should be also another limit, because its currently possible to build infinite towers
-						minetest.chat_send_all(string.format("exit loop"))
-
-					end
-
-				end,
-
+				buildScaffolding(node, pos, itemstack, player)
+			end
+		end,
 		node_box = {
 			type = "fixed",
 			fixed = {
@@ -139,21 +148,18 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
 			end
 		end,
-		--[[ on_rightclick = function(pos, node, puncher)
-		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:scaffolding"
-				minetest.env:set_node(pos, node)
+		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
+			-- if user hits scaffolding with platform Wooden scaffolding then --
+			if itemstack:get_name() == "scaffolding:platform" then
+				node = "scaffolding:platform";
+				buildPlatform(node, pos, itemstack)
+			end
+			-- if user hits scaffolding with platform Iron scaffolding then --
+			if itemstack:get_name() == "scaffolding:iron_platform" then
+				node = "scaffolding:iron_platform";
+				buildPlatform(node, pos, itemstack)
 			end
 		end,
-		on_punch = function(pos, node, puncher)
-		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "air"
-				minetest.env:set_node(pos, node)
-				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
-			end
-		end,]]
 		node_box = {
 			type = "fixed",
 			fixed = {
@@ -273,74 +279,21 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 			end
 		end,
 		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
-			-- if user hits scaffolding with platform then --
+			-- if user hits scaffolding with platform Iron scaffolding then --
 			if itemstack:get_name() == "scaffolding:iron_platform" then
-
-				--arrayZ ( 1,  0, -1, -1,  0,  0,  1,  1 );
-			--	arrayX(  0, -1,  0,  0,  1,  1,  0,  0 );
-
-				local name = minetest.get_node(pos).name
-
-				posZ = {'1', '0', '-1', '-1', '0', '0', '1', '1' };
-				posX = {'0', '-1',  '0', '0', '1', '1', '0', '0' };
-
-					for nameCount = 1, 8 do
-						pos.z = pos.z + posZ[nameCount];
-						pos.x = pos.x + posX[nameCount];
-						local current_node = minetest.get_node(pos);
-						if current_node.name == "air" then
-							minetest.set_node(pos, {name = "scaffolding:iron_platform"} )
-							itemstack:take_item(1); --//and remove one if its the correct one
-							break;
-						end
-					end
+				node = "scaffolding:iron_platform";
+				buildPlatform(node, pos, itemstack)
 			end
+			-- if user hits scaffolding with platform Wooden scaffolding then --
+			if itemstack:get_name() == "scaffolding:platform" then
+				node = "scaffolding:platform";
+				buildPlatform(node, pos, itemstack)
+			end
+			-- if user hits scaffolding with scaffolding then --
 			if itemstack:get_name() == "scaffolding:iron_scaffolding" then
-
-				-- many thanks to addi for improveing (rewriteing) my crappy code --
+				node = "scaffolding:iron_scaffolding";
 				local name = minetest.get_node(pos).name 									-- get loacation of node
-				height = 0;
-				depth = 0; -- !!Note!! depth is not deeded at the moment
-
-				--[[ debug stuff ]]
-				minetest.chat_send_all(string.format("node: %s",name))
-
-				minetest.chat_send_all(string.format("node: %s %s %s ",pos.x, pos.y, pos.z ))
-
-				-- set pos at bottom of scafolding tower.
-				repeat
-					pos.y = pos.y - 1; --every run get one node up
-					depth = depth - 1 -- !!Note!! depth is not needed at the moment
-
-					local current_node = minetest.get_node(pos); --get the node of the new position
-						minetest.chat_send_all(string.format("found %q at location: %s",
-							current_node.name,
-							minetest.pos_to_string(pos)
-						))
-
-					until current_node.name ~= "scaffolding:iron_scaffolding" -- will repeat untill it dose not find a scaffolding node
-						minetest.chat_send_all(string.format("exit loop"))
-
-				-- check height of scaffolding tower --
-
-				repeat
-					pos.y = pos.y + 1; --every run get one node up
-					height = height + 1
-					local current_node = minetest.get_node(pos); --get the node of the new position
-					minetest.chat_send_all(string.format("found %q at location: %s",
-														 current_node.name,
-														 minetest.pos_to_string(pos)
-														 ))
-
-					if current_node.name == "air" then
-						minetest.set_node(pos, {name = "scaffolding:iron_scaffolding"} )
-						itemstack:take_item(1); --//and remove one if its the correct one
-						player:set_wielded_item(itemstack);--//update inventory of the player
-					end
-				until current_node.name ~= "scaffolding:iron_scaffolding" or height >= 32 --we repeat until we find something else then "scaffolding:scaffolding"
-				--maybe there should be also another limit, because its currently possible to build infinite towers
-				minetest.chat_send_all(string.format("exit loop"))
-
+				buildScaffolding(node, pos, itemstack, player)
 			end
 
 		end,
@@ -371,22 +324,18 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
 			end
 		end,
-		--[[on_rightclick = function(pos, node, puncher)
-		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:iron_scaffolding"
-				minetest.env:set_node(pos, node)
+		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
+			-- if user hits scaffolding with platform Iron scaffolding then --
+			if itemstack:get_name() == "scaffolding:iron_platform" then
+				node = "scaffolding:iron_platform";
+				buildPlatform(node, pos, itemstack)
+			end
+			-- if user hits scaffolding with platform Wooden scaffolding then --
+			if itemstack:get_name() == "scaffolding:platform" then
+				node = "scaffolding:platform";
+				buildPlatform(node, pos, itemstack)
 			end
 		end,
-		on_punch = function(pos, node, puncher)
-		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "air"
-				minetest.env:set_node(pos, node)
-				--puncher:get_inventory():remove_item("main", ItemStack("beer_test:tankard"))
-				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
-			end
-		end,]]
 		node_box = {
 			type = "fixed",
 			fixed = {

@@ -1,5 +1,4 @@
 
-
 print("scaffolding: Loading 'functions.lua'")
 dofile(minetest.get_modpath("scaffolding").."/functions.lua")
 
@@ -29,6 +28,7 @@ minetest.register_node("scaffolding:scaffolding", {
 			end
 		end,
 		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
+			-- if user hits scaffolding with platform then --
 			if itemstack:get_name() == "scaffolding:platform" then
 
 				--arrayZ ( 1,  0, -1, -1,  0,  0,  1,  1 );
@@ -50,7 +50,7 @@ minetest.register_node("scaffolding:scaffolding", {
 						end
 					end
 			end
-
+			-- if user hits scaffolding with scaffolding then --
 			if itemstack:get_name() == "scaffolding:scaffolding" then
 
 				-- many thanks to addi for improveing (rewriteing) my crappy code --
@@ -124,6 +124,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		"scaffolding_wooden_scaffolding.png^scaffolding_reinforced.png"},
 		drop = "scaffolding:scaffolding",
 		paramtype = "light",
+		light_source = 14,
 		paramtype2 = "facedir",
 		climbable = true,
 		walkable = false,
@@ -208,6 +209,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 	minetest.register_node("scaffolding:reinforced_platform", {
 		description = "Wooden Platform",
 		drawtype = "nodebox",
+		light_source = 14,
 		tiles = {"scaffolding_wooden_scaffolding.png^scaffolding_reinforced.png", "scaffolding_wooden_scaffolding.png^scaffolding_reinforced.png", "scaffolding_wooden_scaffolding.png^scaffolding_platform.png"},
 		drop = "scaffolding:platform",
 		paramtype = "light",
@@ -271,6 +273,28 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 			end
 		end,
 		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
+			-- if user hits scaffolding with platform then --
+			if itemstack:get_name() == "scaffolding:iron_platform" then
+
+				--arrayZ ( 1,  0, -1, -1,  0,  0,  1,  1 );
+			--	arrayX(  0, -1,  0,  0,  1,  1,  0,  0 );
+
+				local name = minetest.get_node(pos).name
+
+				posZ = {'1', '0', '-1', '-1', '0', '0', '1', '1' };
+				posX = {'0', '-1',  '0', '0', '1', '1', '0', '0' };
+
+					for nameCount = 1, 8 do
+						pos.z = pos.z + posZ[nameCount];
+						pos.x = pos.x + posX[nameCount];
+						local current_node = minetest.get_node(pos);
+						if current_node.name == "air" then
+							minetest.set_node(pos, {name = "scaffolding:iron_platform"} )
+							itemstack:take_item(1); --//and remove one if its the correct one
+							break;
+						end
+					end
+			end
 			if itemstack:get_name() == "scaffolding:iron_scaffolding" then
 
 				-- many thanks to addi for improveing (rewriteing) my crappy code --
@@ -335,6 +359,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		paramtype2 = "facedir",
 		climbable = true,
 		walkable = false,
+		light_source = 14,
 		is_ground_content = true,
 		groups = {snappy=2,cracky=3},
 		sounds = default.node_sound_wood_defaults(),
@@ -423,6 +448,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		paramtype2 = "facedir",
 		climbable = false,
 		walkable = true,
+		light_source = 14,
 		is_ground_content = true,
 		groups = {snappy=2,cracky=3},
 		sounds = default.node_sound_wood_defaults(),

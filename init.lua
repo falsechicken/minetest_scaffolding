@@ -58,12 +58,12 @@ end
 print("scaffolding: Loading 'functions.lua'")
 dofile(minetest.get_modpath("minetest_scaffolding").."/functions.lua")
 
-minetest.register_craftitem("scaffolding:scaffolding_wrench", {
+minetest.register_craftitem("minetest_scaffolding:scaffolding_wrench", {
 	description = "Scaffolding Wrench",
 	inventory_image = "scaffolding_wrench.png",
 })
 
-minetest.register_node("scaffolding:scaffolding", {
+minetest.register_node("minetest_scaffolding:scaffolding", {
 		description = "Wooden Scaffolding",
 		drawtype = "nodebox",
 		tiles = {"scaffolding_wooden_scaffolding_top.png", "scaffolding_wooden_scaffolding_top.png", "scaffolding_wooden_scaffolding.png",
@@ -77,26 +77,26 @@ minetest.register_node("scaffolding:scaffolding", {
 		sounds = default.node_sound_wood_defaults(),
 		on_punch = function(pos, node, puncher)
 		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:reinforced_scaffolding"
+			if tool and tool == "minetest_scaffolding:scaffolding_wrench" then
+				node.name = "minetest_scaffolding:reinforced_scaffolding"
 				minetest.env:set_node(pos, node)
-				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
+				puncher:get_inventory():add_item("main", ItemStack("minetest_scaffolding:scaffolding"))
 			end
 		end,
 		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 			-- if user hits scaffolding with platform Wooden scaffolding then --
-			if itemstack:get_name() == "scaffolding:platform" then
-				node = "scaffolding:platform";
+			if itemstack:get_name() == "minetest_scaffolding:platform" then
+				node = "minetest_scaffolding:platform";
 				buildPlatform(node, pos, itemstack)
 			end
 			-- if user hits scaffolding with platform Iron scaffolding then --
-			if itemstack:get_name() == "scaffolding:iron_platform" then
-				node = "scaffolding:iron_platform";
+			if itemstack:get_name() == "minetest_scaffolding:iron_platform" then
+				node = "minetest_scaffolding:iron_platform";
 				buildPlatform(node, pos, itemstack)
 			end
 			-- if user hits scaffolding with scaffolding then --
-			if itemstack:get_name() == "scaffolding:scaffolding" then
-				node = "scaffolding:scaffolding";
+			if itemstack:get_name() == "minetest_scaffolding:scaffolding" then
+				node = "minetest_scaffolding:scaffolding";
 				local name = minetest.get_node(pos).name 									-- get loacation of node
 				buildScaffolding(node, pos, itemstack, player)
 			end
@@ -118,12 +118,12 @@ minetest.register_node("scaffolding:scaffolding", {
 	end,
 	})
 
-minetest.register_node("scaffolding:reinforced_scaffolding", {
+minetest.register_node("minetest_scaffolding:reinforced_scaffolding", {
 		description = "Wooden Scaffolding",
 		drawtype = "nodebox",
 		tiles = {"scaffolding_wooden_scaffolding.png^scaffolding_reinforced.png", "scaffolding_wooden_scaffolding.png^scaffolding_reinforced.png",
 		"scaffolding_wooden_scaffolding.png^scaffolding_reinforced.png"},
-		drop = "scaffolding:scaffolding",
+		drop = "minetest_scaffolding:scaffolding",
 		paramtype = "light",
 		light_source = 14,
 		paramtype2 = "facedir",
@@ -134,21 +134,21 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		sounds = default.node_sound_wood_defaults(),
 		on_punch = function(pos, node, puncher)
 		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:scaffolding"
+			if tool and tool == "minetest_scaffolding:scaffolding_wrench" then
+				node.name = "minetest_scaffolding:scaffolding"
 				minetest.env:set_node(pos, node)
-				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
+				puncher:get_inventory():add_item("main", ItemStack("minetest_scaffolding:scaffolding"))
 			end
 		end,
 		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 			-- if user hits scaffolding with platform Wooden scaffolding then --
-			if itemstack:get_name() == "scaffolding:platform" then
-				node = "scaffolding:platform";
+			if itemstack:get_name() == "minetest_scaffolding:platform" then
+				node = "minetest_scaffolding:platform";
 				buildPlatform(node, pos, itemstack)
 			end
 			-- if user hits scaffolding with platform Iron scaffolding then --
-			if itemstack:get_name() == "scaffolding:iron_platform" then
-				node = "scaffolding:iron_platform";
+			if itemstack:get_name() == "minetest_scaffolding:iron_platform" then
+				node = "minetest_scaffolding:iron_platform";
 				buildPlatform(node, pos, itemstack)
 			end
 		end,
@@ -166,7 +166,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		},
 	})
 
-	minetest.register_node("scaffolding:platform", {
+	minetest.register_node("minetest_scaffolding:platform", {
 		description = "Wooden Platform",
 		drawtype = "nodebox",
 		tiles = {"scaffolding_wooden_scaffolding_top.png", "scaffolding_wooden_scaffolding_top.png", "scaffolding_wooden_scaffolding.png^scaffolding_platform.png"},
@@ -179,8 +179,8 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		sounds = default.node_sound_wood_defaults(),
 		on_punch = function(pos, node, puncher)
 		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:reinforced_platform"
+			if tool and tool == "minetest_scaffolding:scaffolding_wrench" then
+				node.name = "minetest_scaffolding:reinforced_platform"
 				minetest.env:set_node(pos, node)
 			end
 		end,
@@ -204,12 +204,12 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 	end,
 	})
 
-	minetest.register_node("scaffolding:reinforced_platform", {
+	minetest.register_node("minetest_scaffolding:reinforced_platform", {
 		description = "Wooden Platform",
 		drawtype = "nodebox",
 		light_source = 14,
 		tiles = {"scaffolding_wooden_scaffolding.png^scaffolding_reinforced.png", "scaffolding_wooden_scaffolding.png^scaffolding_reinforced.png", "scaffolding_wooden_scaffolding.png^scaffolding_platform.png"},
-		drop = "scaffolding:platform",
+		drop = "minetest_scaffolding:platform",
 		paramtype = "light",
 		paramtype2 = "facedir",
 		climbable = false,
@@ -219,8 +219,8 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		sounds = default.node_sound_wood_defaults(),
 		on_punch = function(pos, node, puncher)
 		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:platform"
+			if tool and tool == "minetest_scaffolding:scaffolding_wrench" then
+				node.name = "minetest_scaffolding:platform"
 				minetest.env:set_node(pos, node)
 			end
 		end,
@@ -238,7 +238,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		},
 	})
 
-	minetest.register_node("scaffolding:iron_scaffolding", {
+	minetest.register_node("minetest_scaffolding:iron_scaffolding", {
 		description = "Iron Scaffolding",
 		drawtype = "nodebox",
 		tiles = {"scaffolding_iron_scaffolding_top.png", "scaffolding_iron_scaffolding_top.png", "scaffolding_iron_scaffolding.png",
@@ -264,26 +264,26 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		},
 		on_punch = function(pos, node, puncher)
 		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:reinforced_iron_scaffolding"
+			if tool and tool == "minetest_scaffolding:scaffolding_wrench" then
+				node.name = "minetest_scaffolding:reinforced_iron_scaffolding"
 				minetest.env:set_node(pos, node)
-				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
+				puncher:get_inventory():add_item("main", ItemStack("minetest_scaffolding:scaffolding"))
 			end
 		end,
 		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 			-- if user hits scaffolding with platform Iron scaffolding then --
-			if itemstack:get_name() == "scaffolding:iron_platform" then
-				node = "scaffolding:iron_platform";
+			if itemstack:get_name() == "minetest_scaffolding:iron_platform" then
+				node = "minetest_scaffolding:iron_platform";
 				buildPlatform(node, pos, itemstack)
 			end
 			-- if user hits scaffolding with platform Wooden scaffolding then --
-			if itemstack:get_name() == "scaffolding:platform" then
-				node = "scaffolding:platform";
+			if itemstack:get_name() == "minetest_scaffolding:platform" then
+				node = "minetest_scaffolding:platform";
 				buildPlatform(node, pos, itemstack)
 			end
 			-- if user hits scaffolding with scaffolding then --
-			if itemstack:get_name() == "scaffolding:iron_scaffolding" then
-				node = "scaffolding:iron_scaffolding";
+			if itemstack:get_name() == "minetest_scaffolding:iron_scaffolding" then
+				node = "minetest_scaffolding:iron_scaffolding";
 				local name = minetest.get_node(pos).name 									-- get loacation of node
 				buildScaffolding(node, pos, itemstack, player)
 			end
@@ -294,7 +294,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 	end,
 	})
 
-	minetest.register_node("scaffolding:reinforced_iron_scaffolding", {
+	minetest.register_node("minetest_scaffolding:reinforced_iron_scaffolding", {
 		description = "Iron Scaffolding",
 		drawtype = "nodebox",
 		tiles = {"scaffolding_iron_scaffolding.png^scaffolding_reinforced.png", "scaffolding_iron_scaffolding.png^scaffolding_reinforced.png",
@@ -310,21 +310,21 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		sounds = default.node_sound_wood_defaults(),
 		on_punch = function(pos, node, puncher)
 		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:iron_scaffolding"
+			if tool and tool == "minetest_scaffolding:scaffolding_wrench" then
+				node.name = "minetest_scaffolding:iron_scaffolding"
 				minetest.env:set_node(pos, node)
-				puncher:get_inventory():add_item("main", ItemStack("scaffolding:scaffolding"))
+				puncher:get_inventory():add_item("main", ItemStack("minetest_scaffolding:scaffolding"))
 			end
 		end,
 		on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 			-- if user hits scaffolding with platform Iron scaffolding then --
-			if itemstack:get_name() == "scaffolding:iron_platform" then
-				node = "scaffolding:iron_platform";
+			if itemstack:get_name() == "minetest_scaffolding:iron_platform" then
+				node = "minetest_scaffolding:iron_platform";
 				buildPlatform(node, pos, itemstack)
 			end
 			-- if user hits scaffolding with platform Wooden scaffolding then --
-			if itemstack:get_name() == "scaffolding:platform" then
-				node = "scaffolding:platform";
+			if itemstack:get_name() == "minetest_scaffolding:platform" then
+				node = "minetest_scaffolding:platform";
 				buildPlatform(node, pos, itemstack)
 			end
 		end,
@@ -342,7 +342,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		},
 	})
 
-	minetest.register_node("scaffolding:iron_platform", {
+	minetest.register_node("minetest_scaffolding:iron_platform", {
 		description = "Iron Platform",
 		drawtype = "nodebox",
 		tiles = {"scaffolding_iron_scaffolding_top.png", "scaffolding_iron_scaffolding_top.png", "scaffolding_iron_scaffolding.png^scaffolding_platform.png"},
@@ -355,8 +355,8 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		sounds = default.node_sound_wood_defaults(),
 		on_punch = function(pos, node, puncher)
 		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:reinforced_iron_platform"
+			if tool and tool == "minetest_scaffolding:scaffolding_wrench" then
+				node.name = "minetest_scaffolding:reinforced_iron_platform"
 				minetest.env:set_node(pos, node)
 			end
 		end,
@@ -380,7 +380,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		end,
 	})
 
-	minetest.register_node("scaffolding:reinforced_iron_platform", {
+	minetest.register_node("minetest_scaffolding:reinforced_iron_platform", {
 		description = "Iron Platform",
 		drawtype = "nodebox",
 		tiles = {"scaffolding_iron_scaffolding.png^scaffolding_reinforced.png", "scaffolding_iron_scaffolding.png^scaffolding_reinforced.png", "scaffolding_iron_scaffolding.png^scaffolding_platform.png"},
@@ -395,8 +395,8 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 		sounds = default.node_sound_wood_defaults(),
 		on_punch = function(pos, node, puncher)
 		local tool = puncher:get_wielded_item():get_name()
-			if tool and tool == "scaffolding:scaffolding_wrench" then
-				node.name = "scaffolding:iron_platform"
+			if tool and tool == "minetest_scaffolding:scaffolding_wrench" then
+				node.name = "minetest_scaffolding:iron_platform"
 				minetest.env:set_node(pos, node)
 			end
 		end,
@@ -419,7 +419,7 @@ minetest.register_node("scaffolding:reinforced_scaffolding", {
 ----------------------
 
 minetest.register_craft({
-	output = 'scaffolding:scaffolding 12',
+	output = 'minetest_scaffolding:scaffolding 12',
 	recipe = {
 		{'default:wood', 'default:wood', 'default:wood'},
 		{'default:stick', '', 'default:stick'},
@@ -428,7 +428,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'scaffolding:scaffolding 4',
+	output = 'minetest_scaffolding:scaffolding 4',
 	recipe = {
 		{'default:wood'},
 		{'default:stick'},
@@ -439,26 +439,26 @@ minetest.register_craft({
 -- back to scaffolding --
 
 minetest.register_craft({
-	output = 'scaffolding:scaffolding',
+	output = 'minetest_scaffolding:scaffolding',
 	recipe = {
-		{'scaffolding:platform'},
-		{'scaffolding:platform'},
+		{'minetest_scaffolding:platform'},
+		{'minetest_scaffolding:platform'},
 	}
 })
 
 -- wood platforms --
 
 minetest.register_craft({
-	output = 'scaffolding:platform 2',
+	output = 'minetest_scaffolding:platform 2',
 	recipe = {
-		{'scaffolding:scaffolding'},
+		{'minetest_scaffolding:scaffolding'},
 	}
 })
 
 minetest.register_craft({
-	output = 'scaffolding:platform 6',
+	output = 'minetest_scaffolding:platform 6',
 	recipe = {
-		{'scaffolding:scaffolding', 'scaffolding:scaffolding', 'scaffolding:scaffolding'},
+		{'minetest_scaffolding:scaffolding', 'minetest_scaffolding:scaffolding', 'minetest_scaffolding:scaffolding'},
 	}
 })
 
@@ -467,7 +467,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:wood',
 	recipe = {
-		{'scaffolding:scaffolding', 'scaffolding:scaffolding'},
+		{'minetest_scaffolding:scaffolding', 'minetest_scaffolding:scaffolding'},
 	}
 })
 
@@ -476,7 +476,7 @@ minetest.register_craft({
 ----------------------
 
 minetest.register_craft({
-	output = 'scaffolding:iron_scaffolding 12',
+	output = 'minetest_scaffolding:iron_scaffolding 12',
 	recipe = {
 		{'default:steel_ingot', 'default:steel_ingot', 'default:steel_ingot'},
 		{'default:stick', '', 'default:stick'},
@@ -485,7 +485,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'scaffolding:iron_scaffolding 4',
+	output = 'minetest_scaffolding:iron_scaffolding 4',
 	recipe = {
 		{'default:steel_ingot'},
 		{'default:stick'},
@@ -495,26 +495,26 @@ minetest.register_craft({
 -- back to scaffolding --
 
 minetest.register_craft({
-	output = 'scaffolding:iron_scaffolding',
+	output = 'minetest_scaffolding:iron_scaffolding',
 	recipe = {
-		{'scaffolding:iron_platform'},
-		{'scaffolding:iron_platform'},
+		{'minetest_scaffolding:iron_platform'},
+		{'minetest_scaffolding:iron_platform'},
 	}
 })
 
 -- iron platforms --
 
 minetest.register_craft({
-	output = 'scaffolding:iron_platform 2',
+	output = 'minetest_scaffolding:iron_platform 2',
 	recipe = {
-		{'scaffolding:iron_scaffolding'},
+		{'minetest_scaffolding:iron_scaffolding'},
 	}
 })
 
 minetest.register_craft({
-	output = 'scaffolding:iron_platform 6',
+	output = 'minetest_scaffolding:iron_platform 6',
 	recipe = {
-		{'scaffolding:iron_scaffolding', 'scaffolding:iron_scaffolding', 'scaffolding:iron_scaffolding'},
+		{'minetest_scaffolding:iron_scaffolding', 'minetest_scaffolding:iron_scaffolding', 'minetest_scaffolding:iron_scaffolding'},
 	}
 })
 
@@ -523,7 +523,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:steel_ingot',
 	recipe = {
-		{'scaffolding:iron_scaffolding', 'scaffolding:iron_scaffolding'},
+		{'minetest_scaffolding:iron_scaffolding', 'minetest_scaffolding:iron_scaffolding'},
 	}
 })
 
@@ -534,7 +534,7 @@ minetest.register_craft({
 ------------
 
 minetest.register_craft({
-	output = 'scaffolding:scaffolding_wrench',
+	output = 'minetest_scaffolding:scaffolding_wrench',
 	recipe = {
 		{'', 'default:steel_ingot', ''},
 		{'', 'default:steel_ingot', 'default:steel_ingot'},

@@ -56,7 +56,7 @@ local buildScaffolding = function(node, pos, itemstack, player)
 end
 
 print("scaffolding: Loading 'functions.lua'")
-dofile(minetest.get_modpath("scaffolding").."/functions.lua")
+dofile(minetest.get_modpath("minetest_scaffolding").."/functions.lua")
 
 minetest.register_craftitem("scaffolding:scaffolding_wrench", {
 	description = "Scaffolding Wrench",
